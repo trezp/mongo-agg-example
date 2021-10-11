@@ -1,0 +1,16 @@
+{
+  "name": "agg-example-proj",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": [],
+  "author": "Treasure Porth",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "mongodb": "^4.1.3"
+  }
+}
