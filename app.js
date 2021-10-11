@@ -19,7 +19,8 @@ async function main() {
         '$project': {
           name: 1,
           averageScore: { $avg: "$grades.score"},
-          address: 1
+          address: 1,
+          borough: 1
         }
       }, 
       {
@@ -33,7 +34,13 @@ async function main() {
     ]);
 
     await aggCursor.forEach(restaurant => {
-        console.log(`${restaurant.name}: ${restaurant.averageScore}`);
+        const addr = restaurant.address;
+
+        console.log(`
+          Name: ${restaurant.name}
+          Address: ${addr.building} ${addr.street}, ${restaurant.borough} ${addr.zipcode}
+          Average Score: ${restaurant.averageScore}`
+        );
     });
   } finally {
       // Close the connection to the MongoDB cluster
