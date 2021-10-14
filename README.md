@@ -21,7 +21,7 @@ npm install
 npm start
 ```
 
-## What is aggregation with MongoDB, and how does it it differ from a regular query? 
+## What is aggregation with MongoDB, and how does it differ from a regular query? 
 
 A MongoDB query helps you narrow down your data:  
 
@@ -88,6 +88,20 @@ In the following example, `$grades.score` represents each score in an array of s
   borough: 1
 }
 ```
+averageScore: { $round: { $avg: "$grades.score"}}
+
+Let's use the `$round` operator to round the average scores to the first decimal place. `$round` can take a single value or an array with the value and number of decimal places: 
+
+```
+'$project': {
+  name: 1,
+  averageScore: { 
+    $round: [{ $avg: "$grades.score" }, 1]
+  }
+  address: 1,
+  borough: 1
+}
+```
 
 Using our newly created `averageScore` field, we can use a `$sort` stage to sort the Manhattan restaurants in descending order: 
 
@@ -107,7 +121,7 @@ Finally we can limit the number of documents to the top ten scoring restaurants:
 
 # Assignment 
 
-You can complete the activity by cloning this repo (see instructions above) or using Compass. Read more about [connecting to a MongoDB app](LINK) or [Compass](LINK). 
+You can complete the activity by cloning this repo (see instructions above) and connecting to the app or using Compass. 
 
 ## Experiment
 Spend a few minutes playing with the example in `app.js` or by plugging the values into Compass
@@ -118,7 +132,7 @@ Spend a few minutes playing with the example in `app.js` or by plugging the valu
 - Print the 10 highest score restaurants serving Chinese cuisine 
 
 ## Create your own aggregation 
-Using the mflix database, write an aggregation to create a list of the 10 longest movies with the genre “fantasy”: 
+Using the `sample_mflix` database and `movies` collection, write an aggregation to create a list of the 10 longest movies with the genre “fantasy”: 
 
 - Stage 1 `$match`: Find all movies with the genre “fantasy” 
 - Stage 2 `$project`: 

@@ -10,37 +10,35 @@ async function main() {
 
     const aggCursor = client.db("sample_restaurants").collection("restaurants").aggregate([
       {
-        '$match':  {
-          cuisine: "Mexican",
-          borough: "Manhattan",
+        '$match': { 
+          cuisine: "Mexican", borough: "Manhattan"
         }
       }, 
       {
         '$project': {
+          _id: 0,
           name: 1,
-          averageScore: { $avg: "$grades.score"},
-          address: 1,
-          borough: 1
+          averageScore: { 
+            $round: [ 
+              { $avg: "$grades.score"}, 1]
+          }
         }
-      }, 
+      },
       {
-        '$sort': {
+        '$sort': { 
           "averageScore": -1
         }
       }, 
       {
         '$limit': 10
-      }
+      }  
     ]);
 
-    await aggCursor.forEach(restaurant => {
-        const addr = restaurant.address;
-
-        console.log(`
-          Name: ${restaurant.name}
-          Address: ${addr.building} ${addr.street}, ${restaurant.borough} ${addr.zipcode}
-          Average Score: ${restaurant.averageScore}`
-        );
+    await aggCursor.forEach((restaurant) => {
+      console.log(`
+        Name: ${restaurant.name}
+        Average Score: ${restaurant.averageScore}`
+      );
     });
   } finally {
       // Close the connection to the MongoDB cluster
